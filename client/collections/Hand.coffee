@@ -11,53 +11,50 @@ class window.Hand extends Backbone.Collection
     @acceptViewInput = false;
 
     @on 'promptPlayer', ->
-
       @acceptViewInput = true
 
 
     @on 'promptDealer', ->
-      console.log("prompting Dealer")
       @dealerHit()
 
     @on 'hit', ->
-      console.log "hit"
+      console.log "You hit."
       @hit()
 
     @on 'stood', ->
-      console.log "stood"
+      console.log "You stand."
       @stand()
 
 
   dealerHit: ->
 
-    console.log("starting dealerHit")
-
     #if over 21, call dealer bust
 
-    console.log(@scores())
+    dealerCheck = =>
+      if Math.min(@scores()...) > 21
+        @dealerBust()
+        return true
 
-    if Math.min(@scores()...) > 21
-      @dealerBust()
-      console.log("dealerbust")
-      return
+      #if between 17 and 21, trigger game complete (app can listen)
 
-    #if between 17 and 21, trigger game complete (app can listen)
+      if ((17 <= @scores()[0] <= 21) or (17 <= @scores()[1] <= 21) )
+        @trigger 'gameComplete'
+        return true
 
-    if ((17 <= @scores()[0] <= 21) or (17 <= @scores()[1] <= 21) )
-      @trigger 'gameComplete'
-      console.log("game over. somebody won")
-      return
+    dealerNewCard = =>
+      out = @add(@deck.pop()).last()
+      out
 
-    out = @add(@deck.pop()).last()
+    repeater = =>
+      b = dealerCheck()
+      if not b
+        dealerNewCard()
+        setTimeout repeater, 1000
 
-    console.log("setting timeout")
-
-    repeater = => @dealerHit()
-    setTimeout repeater, 1000
-
-
-    out
-
+    @at(0).flip()
+    b = dealerCheck()
+    if not b
+      setTimeout(repeater, 1000)
 
 
 
@@ -92,9 +89,7 @@ class window.Hand extends Backbone.Collection
 
   bust: ->
     @acceptViewInput = false
-    console.log "player busted"
     @trigger 'playerBusted'
 
   dealerBust: ->
-    console.log "dealer busted"
     @trigger 'dealerBusted'

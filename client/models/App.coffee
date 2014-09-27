@@ -9,26 +9,21 @@ class window.App extends Backbone.Model
 
 
     @get('playerHand').on 'playerBusted', =>
-      # @initialize()
-      # @trigger 'resetRender'
+      console.log "You've busted! The dealer wins!"
       @delayedReset()
 
     @get('dealerHand').on 'dealerBusted', =>
-      # @initialize()
-      # @trigger 'resetRender'
+      console.log "The dealer has busted. You win!"
       @delayedReset()
 
     @get('dealerHand').on 'gameComplete', =>
-      console.log "gameComplete did trigger"
+      console.log "The game is over."
       playerValues = (@get 'playerHand').scores()
       dealerValues = (@get 'dealerHand').scores()
       console.log @determineWinner playerValues, dealerValues
-      # @initialize()
-      # @trigger 'resetRender'
       @delayedReset()
 
     @get('playerHand').on 'playerStood', =>
-      console.log "I'm in your app, prompting your dealer"
       @promptDealer()
 
     @promptPlayer()
@@ -41,17 +36,15 @@ class window.App extends Backbone.Model
     ,1000)
 
   promptPlayer: ->
-
+    console.log "Okay, it's your turn now."
     (@get "playerHand").trigger "promptPlayer"
 
   promptDealer: ->
     (@get "dealerHand").trigger "promptDealer"
-    console.log "app is sending a dealer prompt"
+    console.log "It's the dealer's turn now."
 
   determineWinner: (playerValues, dealerValues) ->
     # in this situation neither player has busted
-    console.log(playerValues)
-    console.log(dealerValues)
 
     tooBig = (n) ->
       n > 21
@@ -59,6 +52,8 @@ class window.App extends Backbone.Model
     playerScore = Math.max( (_.reject playerValues, tooBig)... )
     dealerScore = Math.max( (_.reject dealerValues, tooBig)... )
 
-    console.log(playerScore, dealerScore)
+    # when we're determining the winner, update the scores to the best score possible i.e. playerScore or dealerScore
+
+    console.log("You had " + playerScore + " compared to the dealer's " + dealerScore + ".")
     # dealer wins ties
-    if playerScore > dealerScore then "player wins" else "dealer wins"
+    if playerScore > dealerScore then "You win." else "Dealer wins."

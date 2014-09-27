@@ -13,5 +13,4 @@ class window.OptionsView extends Backbone.View
     @$el.children().first().on 'click', =>
       if @model.acceptViewInput then @model.trigger 'hit'
     @$el.children().first().next().on 'click', =>
-      console.log "stand button clicked"
       if @model.acceptViewInput then @model.trigger 'stood'
