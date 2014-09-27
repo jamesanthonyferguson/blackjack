@@ -25,6 +25,10 @@ class window.Hand extends Backbone.Collection
       console.log "You stand."
       @stand()
 
+    @on 'double', ->
+      console.log "You double down."
+      @double()
+
 
   dealerHit: ->
 
@@ -56,7 +60,11 @@ class window.Hand extends Backbone.Collection
     if not b
       setTimeout(repeater, 1000)
 
-
+  double: =>
+    @hit()
+    if Math.min(@scores()...) < 22
+      setTimeout(@stand.bind(@), 1000)
+    null
 
   hit: ->
     out = @add(@deck.pop()).last()

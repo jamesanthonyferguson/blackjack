@@ -17,6 +17,7 @@ class window.App extends Backbone.Model
       @delayedReset()
 
     @get('dealerHand').on 'gameComplete', =>
+      @trigger 'resetRender'
       console.log "The game is over."
       playerValues = (@get 'playerHand').scores()
       dealerValues = (@get 'dealerHand').scores()
