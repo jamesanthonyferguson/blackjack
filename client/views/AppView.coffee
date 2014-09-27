@@ -12,6 +12,9 @@ class window.AppView extends Backbone.View
 
   initialize: ->
     @render()
+    @model.on "resetRender", =>
+      @render()
+
 
   render: ->
     @$el.children().detach()

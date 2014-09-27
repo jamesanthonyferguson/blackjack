@@ -31,3 +31,13 @@ describe 'Hand', ->
       rank : 1
 
     assert.deepEqual hand.scores(), [1,11];
+
+  it 'player should allow input when prompted, but deny after stand', ->
+    deck = new Deck()
+    hand = new Hand [], deck, false
+
+    assert.strictEqual hand.acceptViewInput, false
+    hand.trigger 'promptPlayer'
+    assert.strictEqual hand.acceptViewInput, true
+    hand.trigger 'stood'
+    assert.strictEqual hand.acceptViewInput, false

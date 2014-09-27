@@ -11,11 +11,9 @@ class window.Hand extends Backbone.Collection
     @acceptViewInput = false;
 
     @on 'promptPlayer', ->
-      console.log "undefined is bullshit its true"
 
       @acceptViewInput = true
 
-      console.log @acceptViewInput
 
     @on 'promptDealer', ->
       console.log("prompting Dealer")
