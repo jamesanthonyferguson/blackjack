@@ -9,25 +9,36 @@ class window.App extends Backbone.Model
 
 
     @get('playerHand').on 'playerBusted', =>
-      @initialize()
-      @trigger 'resetRender'
+      # @initialize()
+      # @trigger 'resetRender'
+      @delayedReset()
 
     @get('dealerHand').on 'dealerBusted', =>
-      @initialize()
-      @trigger 'resetRender'
+      # @initialize()
+      # @trigger 'resetRender'
+      @delayedReset()
 
     @get('dealerHand').on 'gameComplete', =>
       console.log "gameComplete did trigger"
       playerValues = (@get 'playerHand').scores()
       dealerValues = (@get 'dealerHand').scores()
       console.log @determineWinner playerValues, dealerValues
-      @initialize()
+      # @initialize()
+      # @trigger 'resetRender'
+      @delayedReset()
 
     @get('playerHand').on 'playerStood', =>
       console.log "I'm in your app, prompting your dealer"
       @promptDealer()
 
     @promptPlayer()
+
+
+  delayedReset: ->
+    setTimeout( =>
+      @initialize()
+      @trigger 'resetRender'
+    ,1000)
 
   promptPlayer: ->
 
