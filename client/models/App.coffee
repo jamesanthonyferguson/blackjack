@@ -61,7 +61,17 @@ class window.App extends Backbone.Model
 
     console.log("You had " + playerScore + " compared to the dealer's " + dealerScore + ".")
     # dealer wins ties
-    if playerScore > dealerScore then "You win." else "Dealer wins."
+
+    if playerScore > dealerScore
+      "You win."
+    else if dealerScore > playerScore
+      "Dealer wins."
+    else if (@get "playerHand").length is (@get "dealerHand").length
+      "Push"
+    else if (@get "playerHand").length > (@get "dealerHand").length
+      "Values tied. Dealer wins based on length."
+    else
+      "Values tied. Player wins based on length."
 
   promptPlayer: ->
     console.log "Okay, it's your turn now."
