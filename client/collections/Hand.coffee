@@ -21,7 +21,6 @@ class window.Hand extends Backbone.Collection
 
     @on 'hit', ->
       console.log "You hit."
-      @acceptDoubleDown = false
       @hit()
 
     @on 'stood', ->
@@ -70,6 +69,7 @@ class window.Hand extends Backbone.Collection
     null
 
   hit: ->
+    @acceptDoubleDown = false
     out = @add(@deck.pop()).last()
     if Math.min(@scores()...) > 21 then @bust()
     out
