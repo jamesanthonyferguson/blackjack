@@ -10,4 +10,5 @@ class window.Deck extends Backbone.Collection
 
   dealPlayer: -> new Hand [ @pop(), @pop() ], @
 
+  # card knows whether it's been revealed or not
   dealDealer: -> new Hand [ @pop().flip(), @pop() ], @, true
