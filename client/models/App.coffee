@@ -36,13 +36,6 @@ class window.App extends Backbone.Model
       @trigger 'resetRender'
     ,1000)
 
-  promptPlayer: ->
-    console.log "Okay, it's your turn now."
-    (@get "playerHand").trigger "promptPlayer"
-
-  promptDealer: ->
-    (@get "dealerHand").trigger "promptDealer"
-    console.log "It's the dealer's turn now."
 
   determineWinner: (playerValues, dealerValues) ->
     # in this situation neither player has busted
@@ -58,3 +51,12 @@ class window.App extends Backbone.Model
     console.log("You had " + playerScore + " compared to the dealer's " + dealerScore + ".")
     # dealer wins ties
     if playerScore > dealerScore then "You win." else "Dealer wins."
+
+  promptPlayer: ->
+    console.log "Okay, it's your turn now."
+    (@get "playerHand").trigger "promptPlayer"
+
+  promptDealer: ->
+    (@get "dealerHand").trigger "promptDealer"
+    console.log "It's the dealer's turn now."
+

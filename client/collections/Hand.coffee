@@ -9,9 +9,11 @@ class window.Hand extends Backbone.Collection
 
     # give the object an "acceptViewInput property"
     @acceptViewInput = false;
+    @acceptDoubleDown = false;
 
     @on 'promptPlayer', ->
       @acceptViewInput = true
+      @acceptDoubleDown = true;
 
 
     @on 'promptDealer', ->
@@ -19,6 +21,7 @@ class window.Hand extends Backbone.Collection
 
     @on 'hit', ->
       console.log "You hit."
+      @acceptDoubleDown = false
       @hit()
 
     @on 'stood', ->

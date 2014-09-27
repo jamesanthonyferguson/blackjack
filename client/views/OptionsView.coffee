@@ -15,4 +15,4 @@ class window.OptionsView extends Backbone.View
     @$el.children().first().next().on 'click', =>
       if @model.acceptViewInput then @model.trigger 'stood'
     @$el.children().first().next().next().on 'click', =>
-      if @model.acceptViewInput then @model.trigger 'double'
+      if @model.acceptViewInput and @model.acceptDoubleDown then @model.trigger 'double'
