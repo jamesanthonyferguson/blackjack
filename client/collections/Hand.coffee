@@ -62,10 +62,10 @@ class window.Hand extends Backbone.Collection
     if not b
       setTimeout(repeater, 1000)
 
-  double: =>
+  double: ->
     @hit()
     if Math.min(@scores()...) < 22
-      setTimeout(@stand.bind(@), 1000)
+      @stand()
     null
 
   hit: ->
@@ -77,7 +77,11 @@ class window.Hand extends Backbone.Collection
 
   stand: ->
     @acceptViewInput = false;
-    @trigger 'playerStood'
+
+    tr = =>
+      @trigger 'playerStood'
+
+    setTimeout tr, 1000
 
 
   scores: ->
