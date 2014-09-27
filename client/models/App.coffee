@@ -27,7 +27,18 @@ class window.App extends Backbone.Model
     @get('playerHand').on 'playerStood', =>
       @promptDealer()
 
-    @promptPlayer()
+    if @get('dealerHand').hasBlackjack()
+      console.log "Dealer has blackjack! Dealer wins."
+      @get('dealerHand').at(0).flip()
+
+      @delayedReset()
+
+    else if @get('playerHand').hasBlackjack()
+      console.log "You have blackjack!! You win!"
+      @delayedReset()
+
+    else
+      @promptPlayer()
 
 
   delayedReset: ->

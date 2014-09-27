@@ -31,6 +31,25 @@ class window.Hand extends Backbone.Collection
       console.log "You double down."
       @double()
 
+  hasBlackjack: ->
+    # only ever call at the beginning so
+    # we only need to check the first two cards
+
+    hasAce = @reduce (memo, card) ->
+      memo or card.get('value') is 1
+    , false
+
+    # if we have an ace, the value sum should be 11.
+
+
+
+    if hasAce
+      foo = @at(0).get("value") + @at(1).get("value")
+      return foo is 11
+    else
+      return false
+
+
 
   dealerHit: ->
 
