@@ -10,8 +10,6 @@ class window.App extends Backbone.Model
     unless @has('score')
       @set 'score', [0,0]
 
-      console.log("oooh setting the score")
-
 
     @get('playerHand').on 'playerBusted', =>
       console.log "You've busted! The dealer wins!"
@@ -37,11 +35,13 @@ class window.App extends Backbone.Model
     if @get('dealerHand').hasBlackjack()
       console.log "Dealer has blackjack! Dealer wins."
       @get('dealerHand').at(0).flip()
+      @incrementScore 1,2
 
       @delayedReset()
 
     else if @get('playerHand').hasBlackjack()
       console.log "You have blackjack!! You win!"
+      @incrementScore 0,2
       @delayedReset()
 
     else
