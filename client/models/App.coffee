@@ -7,13 +7,20 @@ class window.App extends Backbone.Model
     @set 'playerHand', deck.dealPlayer()
     @set 'dealerHand', deck.dealDealer()
 
+    unless @has('score')
+      @set 'score', [0,0]
+
+      console.log("oooh setting the score")
+
 
     @get('playerHand').on 'playerBusted', =>
       console.log "You've busted! The dealer wins!"
+      @incrementScore 1, 1
       @delayedReset()
 
     @get('dealerHand').on 'dealerBusted', =>
       console.log "The dealer has busted. You win!"
+      @incrementScore 0,1
       @delayedReset()
 
     @get('dealerHand').on 'gameComplete', =>
@@ -43,10 +50,14 @@ class window.App extends Backbone.Model
 
   delayedReset: ->
     setTimeout( =>
-      @initialize()
+      @initialize({
+        score : @get('score')
+      })
       @trigger 'resetRender'
     ,1000)
 
+  incrementScore: (index, change) ->
+    (@get 'score')[index] += change
 
   determineWinner: (playerValues, dealerValues) ->
     # in this situation neither player has busted
@@ -62,16 +73,24 @@ class window.App extends Backbone.Model
     console.log("You had " + playerScore + " compared to the dealer's " + dealerScore + ".")
     # dealer wins ties
 
+    out = null
+
     if playerScore > dealerScore
-      "You win."
+      out = "You win."
+      @incrementScore 0, 1;
     else if dealerScore > playerScore
-      "Dealer wins."
+      out = "Dealer wins."
+      @incrementScore 1, 1;
     else if (@get "playerHand").length is (@get "dealerHand").length
-      "Push"
+      out = "Push"
     else if (@get "playerHand").length > (@get "dealerHand").length
-      "Values tied. Dealer wins based on length."
+      out = "Values tied. Dealer wins based on length."
+      @incrementScore 1, 1;
     else
-      "Values tied. Player wins based on length."
+      out = "Values tied. Player wins based on length."
+      @incrementScore 0, 1;
+
+    out
 
   promptPlayer: ->
     console.log "Okay, it's your turn now."
